@@ -1,17 +1,13 @@
 // Initialize Firebase
-/*
-
 const firebaseConfig = {
-  apiKey: "AIzaSyA2c_NmRATFI-gKacQUsZAkZopdH1j8rjk",
-  authDomain: "arabheritagehub.firebaseapp.com",
-  databaseURL: "https://arabheritagehub-default-rtdb.firebaseio.com",
-  projectId: "arabheritagehub",
-  storageBucket: "arabheritagehub.firebasestorage.app",
-  messagingSenderId: "966723291576",
-  appId: "1:966723291576:web:71829ec965a0752bb5a74d",
+  apiKey: "AIzaSyB0QncHtjxIR5Jwaa0aqkSWT9RFdaVvTng",
+  authDomain: "arabfamevoteplus.firebaseapp.com",
+  databaseURL: "https://arabfamevoteplus-default-rtdb.firebaseio.com",
+  projectId: "arabfamevoteplus",
+  storageBucket: "arabfamevoteplus.firebasestorage.app",
+  messagingSenderId: "554479039127",
+  appId: "1:554479039127:web:0e9ce56cc3b68c041cafd2"
 };
-
-*/
 firebase.initializeApp(firebaseConfig);
 const appCheck = firebase.appCheck();
 appCheck.activate("6Lf544sgAAAAAIYRP96xR6Zd5bDJwPD9dh7bo3jW", true);
