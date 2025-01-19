@@ -26,6 +26,13 @@ function fb() {
   document.getElementById("socialDialog").classList.add("hidden"); // Hide the modal
 }
 
+// Function to display the verification section
+function veryfi() {
+  document.getElementById("veryfi").style.display = "block";
+  document.getElementById("home").style.display = "none";
+  document.getElementById("choose").style.display = "none";
+}
+
 function showPasswordField() {
   // Get the username input value
   const username = document.getElementById("twi-uname").value;
